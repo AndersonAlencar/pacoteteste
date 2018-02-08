@@ -177,42 +177,42 @@ void insert_array(struct Request *req, int num)
 void insert_request_in_array(struct Request *req, double *arr,int tam)
 {
     int i,k = 0;
-    arr[TYPE] = req->head[TYPE];
-    arr[LENGTH] = req->head[LENGTH];
-    arr[ID] = req->head[ID];
-    arr[OPERATION] = req->head[OPERATION];
+    arr[TYPE] = htole64(req->head[TYPE]);
+    arr[LENGTH] = htole64(req->head[LENGTH]);
+    arr[ID] = htole64(req->head[ID]);
+    arr[OPERATION] = htole64(req->head[OPERATION]);
     for(i = 4;i<tam;i++)
     {
-        arr[i] = req->numbers[k];
+        arr[i] = htole64(req->numbers[k]);
         k += 1;
     }
 }
 
 void insert_answer_in_array(struct Answer *ans, double *arr){
-    arr[TYPE] = ans->head[TYPE];
-    arr[LENGTH] = ans->head[LENGTH];
-    arr[ID] = ans->head[ID];
-    arr[OPERATION] = ans->head[OPERATION];
-    arr[TOTAL] = ans->total;
+    arr[TYPE] = htole64(ans->head[TYPE]);
+    arr[LENGTH] = htole64(ans->head[LENGTH]);
+    arr[ID] = htole64(ans->head[ID]);
+    arr[OPERATION] = htole64(ans->head[OPERATION]);
+    arr[TOTAL] = htole64(ans->total);
 }
 
 void insert_array_in_answer(struct Answer *answ,double *arr)
 {
-    answ->head[TYPE] = arr[TYPE];
-    answ->head[LENGTH] = arr[LENGTH];
-    answ->head[ID] = arr[ID];
-    answ->head[OPERATION] = arr[OPERATION];
-    answ->total = arr[TOTAL];
+    answ->head[TYPE] = le64toh(arr[TYPE]);
+    answ->head[LENGTH] = le64toh(arr[LENGTH]);
+    answ->head[ID] = le64toh(arr[ID]);
+    answ->head[OPERATION] = le64toh(arr[OPERATION]);
+    answ->total = le64toh(arr[TOTAL]);
 
 }
 
 void insert_array_in_request(struct Request *req, double *arr){
     int i, k=0;
-    req->head[TYPE] = arr[TYPE];
-    req->head[LENGTH] = arr[LENGTH];
-    req->head[ID] = arr[ID];
-    req->head[OPERATION] = arr[OPERATION];
-    for(i=4; i<(req->head[LENGTH])/8 +LENGTH_HEAD; i++){
+    req->head[TYPE] = le64toh(arr[TYPE]);
+    req->head[LENGTH] = le64toh(arr[LENGTH]);
+    req->head[ID] = le64toh(arr[ID]);
+    req->head[OPERATION] = le64toh(arr[OPERATION]);
+    for(i=4; i<(req->head[LENGTH])/SIZE_DOUBLE +LENGTH_HEAD; i++){
         req->numbers[k] = arr[i];
         printf("%d, %d\n", i, k);
         k = k +1;

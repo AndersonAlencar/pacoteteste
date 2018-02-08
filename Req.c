@@ -91,7 +91,7 @@ int main()
                 save_package_req(pac,pont_fim);
                 double *package = (double*)malloc(sizeof(double)*(LENGTH_HEAD+num));
                 int var[1];
-                var[0] = num+LENGTH_HEAD; // recebe o tamanho do array
+                var[0] = htole32(num+LENGTH_HEAD); // recebe o tamanho do array
                 insert_request_in_array(pac,package,LENGTH_HEAD+num);
 
 
