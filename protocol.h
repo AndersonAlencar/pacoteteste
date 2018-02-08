@@ -19,7 +19,7 @@
 #define OP_DIVIDE 3
 #define HISTORY 4
 #define FINISH 5
-#define TOTAL 5
+#define TOTAL 4
 
 #define MATH_SUCESS 0
 #define MATH_ERROR 1
@@ -71,9 +71,13 @@ void save_package_ans(struct Answer *answ, struct Cell *cl);
 
 void insert_array(struct Request *req, int num);
 
-void insert_struct_in_array(struct Request *req, double *arr,int tam);
+void insert_request_in_array(struct Request *req, double *arr,int tam);
 
-void insert_array_in_struct(struct Answer *answ,double *arr);
+void insert_array_in_answer(struct Answer *answ,double *arr);
+
+void insert_array_in_request(struct Request *req, double *arr);
+
+void insert_answer_in_array(struct Answer *ans, double *arr);
 
 void setup_socket(struct sockaddr_in *server, int port,char *ip);
 
@@ -82,3 +86,4 @@ void show_history(struct Cell *cl);
 int menu();
 
 #endif // PROTOCOL_H_INCLUDED
+

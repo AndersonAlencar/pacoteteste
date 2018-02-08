@@ -121,10 +121,6 @@ int config_socket(struct sockaddr_in local, struct sockaddr_in remote, int sockf
 	return client;
 }
 
-
-
-
-
 void generate_head(struct Request *pc, int length,int id, int Op)
 {
     pc->head[TYPE] = TYPE_REQUEST;
@@ -178,7 +174,7 @@ void insert_array(struct Request *req, int num)
     }
 }
 
-void insert_struct_in_array(struct Request *req, double *arr,int tam)
+void insert_request_in_array(struct Request *req, double *arr,int tam)
 {
     int i,k = 0;
     arr[TYPE] = req->head[TYPE];
@@ -192,7 +188,15 @@ void insert_struct_in_array(struct Request *req, double *arr,int tam)
     }
 }
 
-void  insert_array_in_struct(struct Answer *answ,double *arr)
+void insert_answer_in_array(struct Answer *ans, double *arr){
+    arr[TYPE] = ans->head[TYPE];
+    arr[LENGTH] = ans->head[LENGTH];
+    arr[ID] = ans->head[ID];
+    arr[OPERATION] = ans->head[OPERATION];
+    arr[TOTAL] = ans->total;
+}
+
+void insert_array_in_answer(struct Answer *answ,double *arr)
 {
     answ->head[TYPE] = arr[TYPE];
     answ->head[LENGTH] = arr[LENGTH];
@@ -200,6 +204,19 @@ void  insert_array_in_struct(struct Answer *answ,double *arr)
     answ->head[OPERATION] = arr[OPERATION];
     answ->total = arr[TOTAL];
 
+}
+
+void insert_array_in_request(struct Request *req, double *arr){
+    int i, k=0;
+    req->head[TYPE] = arr[TYPE];
+    req->head[LENGTH] = arr[LENGTH];
+    req->head[ID] = arr[ID];
+    req->head[OPERATION] = arr[OPERATION];
+    for(i=4; i<(req->head[LENGTH])/8 +LENGTH_HEAD; i++){
+        req->numbers[k] = arr[i];
+        printf("%d, %d\n", i, k);
+        k = k +1;
+    }
 }
 
 void setup_socket(struct sockaddr_in *server, int porta,char *ip)
@@ -269,4 +286,5 @@ int menu()
     scanf("%d", &op);
     return op;
 }
+
 

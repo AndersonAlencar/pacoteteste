@@ -90,13 +90,13 @@ int main()
                 generate_head(pac,num,id,op);
                 save_package_req(pac,pont_fim);
                 double *package = (double*)malloc(sizeof(double)*(LENGTH_HEAD+num));
-                int *var = (int*)malloc(sizeof(int));
-                var[0] = htole32(num+LENGTH_HEAD); // recebe o tamanho do array
-                insert_struct_in_array(pac,package,LENGTH_HEAD+num);
+                int var[1];
+                var[0] = num+LENGTH_HEAD; // recebe o tamanho do array
+                insert_request_in_array(pac,package,LENGTH_HEAD+num);
 
 
                 env = send(sockfd,var, sizeof(int),FLAGS);
-                env = send(sockfd,package, sizeof(double)*LENGTH_HEAD+num,FLAGS);
+                env = send(sockfd,package, sizeof(double)*(LENGTH_HEAD+num),FLAGS);
                 if(env == -1){
                 perror("\nError no envio do pacote: ");
                 return EXIT_FAILURE;
@@ -108,14 +108,17 @@ int main()
                     perror("\nError na entrega do pacote: ");
                     return EXIT_FAILURE;
                 }
-                insert_array_in_struct(pac_resp,array_resp);
+                insert_array_in_answer(pac_resp,array_resp);
                 show_package_ans(pac_resp);
                 save_package_ans(pac_resp,pont_fim);
 
+
+                memset(package,0,LENGTH_HEAD+num);
                 free(pac); pac = NULL;
                 free(pac_resp); pac_resp = NULL;
                 free(array_resp);array_resp = NULL;
                 free(package); package = NULL;
+
                 break;
 
             case HISTORY:
